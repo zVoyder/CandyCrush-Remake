@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Scripts/Extension/Extension.cs.meta
+guid: e0c1bd624097b4649bf956d9a0eb9371
+========
+guid: e5cc76afa18df4247b9f1c651ecb9cd2
+>>>>>>>> feature/ai:Assets/Scripts/Enemies/CustomStates/ShootState.cs.meta
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
