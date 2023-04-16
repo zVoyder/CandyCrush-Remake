@@ -10,7 +10,7 @@ namespace CandyCrushREM.Managers.Grid
     public class GridManager : MonoBehaviour
     {
         [field: SerializeField, Header("Level")]
-        public LevelPreset LevelPreset { get; private set; }
+        public SO_LevelPreset LevelPreset { get; private set; }
 
         [field: SerializeField]
         public GridLayoutGroup GridLayout { get; private set; }
@@ -20,9 +20,6 @@ namespace CandyCrushREM.Managers.Grid
 
         [field: SerializeField]
         public Color TileOveringColor { get; private set; } = Color.yellow;
-
-        [field: SerializeField]
-        public Color TileSelectedColor { get; private set; } = Color.red;
 
         [field: SerializeField, Header("Combo Manager")]
         public ComboManager ComboManager { get; private set; }
@@ -188,7 +185,7 @@ namespace CandyCrushREM.Managers.Grid
                 {
                     if (Instantiate(TilePrefab, GridLayout.transform.position, Quaternion.identity, GridLayout.transform).TryGetComponent(out TileSlot tile))
                     {
-                        tile.Init(new Vector2Int(x, y), TileOveringColor, TileSelectedColor);
+                        tile.Init(new Vector2Int(x, y), TileOveringColor);
                         tiles[x, y] = tile;
                     }
                 }

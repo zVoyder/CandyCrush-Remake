@@ -12,7 +12,6 @@ namespace CandyCrushREM.Managers.Grid
         public Vector2Int Position { get; private set; }
 
         public Color OveringColor { get; private set; }
-        public Color SelectedColor { get; private set; }
 
         private SpriteRenderer _sprite;
         private Color _spriteBaseColor;
@@ -23,15 +22,12 @@ namespace CandyCrushREM.Managers.Grid
             _spriteBaseColor = _sprite.color;
         }
 
-        public void Init(Vector2Int gridPosition, Color overingColor, Color selectedColor)
+        public void Init(Vector2Int gridPosition, Color overingColor)
         {
             Position = gridPosition;
             OveringColor = overingColor;
-            SelectedColor = selectedColor;
             transform.name = Position.ToString();
         }
-
-        
 
         public void OnMouseEnter()
         {

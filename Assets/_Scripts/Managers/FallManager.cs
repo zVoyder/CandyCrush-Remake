@@ -31,8 +31,6 @@ namespace CandyCrushREM.Managers
             {
                 if(!tile.AssociatedCandy)
                 {
-                    Debug.Log($"Tile {tile.transform.name} doesnt have a candy associated");
-
                     SO_Candy spawnedCandy = PossibleCandiesSpawn[Random.Range(0, PossibleCandiesSpawn.Length)];
 
                     if (Instantiate(spawnedCandy.candyBase, tile.transform.position, Quaternion.identity, tile.transform).TryGetComponent(out Candy candy))
