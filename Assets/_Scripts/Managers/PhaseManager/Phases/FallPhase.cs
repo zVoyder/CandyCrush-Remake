@@ -1,9 +1,6 @@
 ﻿namespace CandyCrushREM.Managers.Phases
 {
-    using CandyCrushREM.Candies;
-    using CandyCrushREM.Managers.Grid;
     using Extension.Patterns.StateMachine;
-    using System.Collections;
     using UnityEngine;
 
     public class FallPhase : State

@@ -1,6 +1,6 @@
 ﻿namespace CandyCrushREM.Managers.Phases
 {
-    using CandyCrushREM.Managers.Grid;
+    using CandyCrushREM.Managers;
     using Extension.Patterns.StateMachine;
     using UnityEngine;
 
@@ -40,7 +40,7 @@
                         {
                             _secondTile = tile;
 
-                            if(GameManager.Instance.Grid.TrySwap(_firstTile, _secondTile, GameManager.Instance.CurrentTiles))
+                            if(GameManager.Instance.SwapManager.TrySwap(_firstTile, _secondTile, GameManager.Instance.CurrentTiles))
                             {
                                 GameManager.Instance.PhaseManager.NextStateIn(SecondsBeforeNextState);
                             }

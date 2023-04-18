@@ -12,34 +12,36 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cdd541a19838870408be5eb3a5a0e24b, type: 3}
   m_Name: Level1
   m_EditorClassIdentifier: 
-  CandieRows:
+  maxMoves: 7
+  scoreToAchieve: 350
+  candieRows:
   - candies:
     - {fileID: 11400000, guid: 7dca4dfbe1555874a8bb271e99cc40aa, type: 2}
     - {fileID: 11400000, guid: e1ee85f9b6a9039429cf53c2e81e1a27, type: 2}
     - {fileID: 11400000, guid: 0e239451410824d4595dfbbf2d8782b4, type: 2}
-    - {fileID: 11400000, guid: e1ee85f9b6a9039429cf53c2e81e1a27, type: 2}
-    - {fileID: 11400000, guid: 0e239451410824d4595dfbbf2d8782b4, type: 2}
-  - candies:
-    - {fileID: 11400000, guid: 0e239451410824d4595dfbbf2d8782b4, type: 2}
-    - {fileID: 11400000, guid: 7dca4dfbe1555874a8bb271e99cc40aa, type: 2}
-    - {fileID: 11400000, guid: e1ee85f9b6a9039429cf53c2e81e1a27, type: 2}
-    - {fileID: 11400000, guid: 7dca4dfbe1555874a8bb271e99cc40aa, type: 2}
-    - {fileID: 11400000, guid: e1ee85f9b6a9039429cf53c2e81e1a27, type: 2}
+    - {fileID: 11400000, guid: eb2dff4c8ecbafe42861065d69727979, type: 2}
+    - {fileID: 11400000, guid: eb2dff4c8ecbafe42861065d69727979, type: 2}
   - candies:
     - {fileID: 11400000, guid: e1ee85f9b6a9039429cf53c2e81e1a27, type: 2}
-    - {fileID: 11400000, guid: 0e239451410824d4595dfbbf2d8782b4, type: 2}
     - {fileID: 11400000, guid: 7dca4dfbe1555874a8bb271e99cc40aa, type: 2}
+    - {fileID: 11400000, guid: eb2dff4c8ecbafe42861065d69727979, type: 2}
     - {fileID: 11400000, guid: 0e239451410824d4595dfbbf2d8782b4, type: 2}
-    - {fileID: 11400000, guid: 7dca4dfbe1555874a8bb271e99cc40aa, type: 2}
+    - {fileID: 11400000, guid: 0e239451410824d4595dfbbf2d8782b4, type: 2}
   - candies:
-    - {fileID: 11400000, guid: 7dca4dfbe1555874a8bb271e99cc40aa, type: 2}
     - {fileID: 11400000, guid: e1ee85f9b6a9039429cf53c2e81e1a27, type: 2}
+    - {fileID: 11400000, guid: 7dca4dfbe1555874a8bb271e99cc40aa, type: 2}
     - {fileID: 11400000, guid: 0e239451410824d4595dfbbf2d8782b4, type: 2}
     - {fileID: 11400000, guid: 0e239451410824d4595dfbbf2d8782b4, type: 2}
     - {fileID: 11400000, guid: e1ee85f9b6a9039429cf53c2e81e1a27, type: 2}
   - candies:
-    - {fileID: 11400000, guid: e1ee85f9b6a9039429cf53c2e81e1a27, type: 2}
-    - {fileID: 11400000, guid: 0e239451410824d4595dfbbf2d8782b4, type: 2}
     - {fileID: 11400000, guid: 7dca4dfbe1555874a8bb271e99cc40aa, type: 2}
     - {fileID: 11400000, guid: e1ee85f9b6a9039429cf53c2e81e1a27, type: 2}
+    - {fileID: 11400000, guid: eb2dff4c8ecbafe42861065d69727979, type: 2}
+    - {fileID: 11400000, guid: eb2dff4c8ecbafe42861065d69727979, type: 2}
+    - {fileID: 11400000, guid: 7dca4dfbe1555874a8bb271e99cc40aa, type: 2}
+  - candies:
+    - {fileID: 11400000, guid: 7dca4dfbe1555874a8bb271e99cc40aa, type: 2}
+    - {fileID: 11400000, guid: eb2dff4c8ecbafe42861065d69727979, type: 2}
+    - {fileID: 11400000, guid: 0e239451410824d4595dfbbf2d8782b4, type: 2}
+    - {fileID: 11400000, guid: eb2dff4c8ecbafe42861065d69727979, type: 2}
     - {fileID: 11400000, guid: 7dca4dfbe1555874a8bb271e99cc40aa, type: 2}

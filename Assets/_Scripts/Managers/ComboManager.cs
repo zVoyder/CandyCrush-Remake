@@ -4,16 +4,18 @@
     using System.Collections.Generic;
     using UnityEngine;
     using CandyCrushREM.Candies;
-    using CandyCrushREM.Managers.Grid;
 
     public class ComboManager : MonoBehaviour
     {
+        [field: SerializeField, Header("Score")]
+        public ScoreManager ScoreManager { get; private set; }
+
         [field: SerializeField, Header("Combination"), Tooltip("How long a combination must be.")]
         public int CombinationCount { get; private set; } = 3;
 
         // Effect on destroy
-        //[field: SerializeField]
-        //public GameObject EffectOnDestroy { get; private set; }
+        [field: SerializeField]
+        public GameObject EffectOnDestroy { get; private set; }
 
         public void DestroyAllCombos(TileSlot[,] gridTiles)
         {
@@ -23,6 +25,8 @@
             {
                 foreach (Candy candy in singleCombo)
                 {
+                    this.ScoreManager.AddScore(1);
+                    Instantiate(EffectOnDestroy, candy.transform.position, Quaternion.identity);
                     Destroy(candy.gameObject);
                 }
             }

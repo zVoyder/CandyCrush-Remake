@@ -3,9 +3,9 @@
     using Extension.Patterns.StateMachine;
     using UnityEngine;
 
-    public class DestroyCombosPhase : State
+    public class ComboPhase : State
     {
-        public DestroyCombosPhase(string name) : base(name)
+        public ComboPhase(string name) : base(name)
         {
         }
 

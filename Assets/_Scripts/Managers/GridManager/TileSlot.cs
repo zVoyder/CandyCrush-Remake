@@ -1,4 +1,4 @@
-namespace CandyCrushREM.Managers.Grid
+namespace CandyCrushREM.Managers
 {
     using CandyCrushREM.Candies;
     using System.Collections;

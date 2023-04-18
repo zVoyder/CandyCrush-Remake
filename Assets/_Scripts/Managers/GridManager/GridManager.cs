@@ -1,4 +1,4 @@
-namespace CandyCrushREM.Managers.Grid
+namespace CandyCrushREM.Managers
 {
     using System.Collections;
     using CandyCrushREM.Candies;
@@ -9,9 +9,6 @@ namespace CandyCrushREM.Managers.Grid
 
     public class GridManager : MonoBehaviour
     {
-        [field: SerializeField, Header("Level")]
-        public SO_LevelPreset LevelPreset { get; private set; }
-
         [field: SerializeField]
         public GridLayoutGroup GridLayout { get; private set; }
 
@@ -21,22 +18,23 @@ namespace CandyCrushREM.Managers.Grid
         [field: SerializeField]
         public Color TileOveringColor { get; private set; } = Color.yellow;
 
-        [field: SerializeField, Header("Combo Manager")]
-        public ComboManager ComboManager { get; private set; }
+        [field: SerializeField, Header("MovesManager")]
+        public SwapManager MovesManager { get; private set; }
 
-        public bool IsSwapping { get; private set; } = false;
-
-        public TileSlot[,] GenerateCandiesWithGrid()
+        public TileSlot[,] GenerateCandiesWithGrid(SO_LevelPreset LevelPreset)
         {
-            TileSlot[,] tiles = GenerateGrid();
+            TileSlot[,] tiles = GenerateGrid(LevelPreset);
 
-            for (int y = 0; y < LevelPreset.GridSize.y; y++)
+            RectTransform rectTransform = GridLayout.GetComponent<RectTransform>();
+            rectTransform.sizeDelta = LevelPreset.gridSize;
+
+            for (int y = 0; y < LevelPreset.gridSize.y; y++)
             {
-                for (int x = 0; x < LevelPreset.GridSize.x; x++)
+                for (int x = 0; x < LevelPreset.gridSize.x; x++)
                 {
-                    if (Instantiate(LevelPreset.CandieRows[y].candies[x].candyBase, tiles[x, y].transform.position, Quaternion.identity, tiles[x, y].transform).TryGetComponent(out Candy candy))
+                    if (Instantiate(LevelPreset.candieRows[y].candies[x].candyBase, tiles[x, y].transform.position, Quaternion.identity, tiles[x, y].transform).TryGetComponent(out Candy candy))
                     {
-                        candy.Init(LevelPreset.CandieRows[y].candies[x]);
+                        candy.Init(LevelPreset.candieRows[y].candies[x]);
                         tiles[x, y].AssociatedCandy = candy;
                     }
                 }
@@ -54,43 +52,6 @@ namespace CandyCrushREM.Managers.Grid
             }
         }
 
-        public bool CheckTileAdjacency(TileSlot tileA, TileSlot tileB)
-        {
-            return IsTileVerticallyAdjacent(tileA, tileB) || IsTileHorizontallyAdjacent(tileA, tileB);
-        }
-        
-        public bool TrySwap(TileSlot tileA, TileSlot tileB, TileSlot[,] gridTiles)
-        {
-            if (!IsSwapping)
-            {
-                bool isValid = IsSwapMoveValid(tileA, tileB, gridTiles);
-
-                if (CheckTileAdjacency(tileA, tileB))
-                {
-                    StartCoroutine(SwapRoutine(tileA, tileB, gridTiles, isValid, .2f));
-
-                    if (isValid)
-                    {
-                        //Debug.Log(isValid);
-
-                        // Swapping the candies
-                        Candy candyA = tileA.AssociatedCandy;
-                        Candy candyB = tileB.AssociatedCandy;
-                        tileA.AssociatedCandy = candyB;
-                        tileB.AssociatedCandy = candyA;
-
-                        // Change the parent of the first candy's transform
-                        candyA.transform.SetParent(tileB.transform);
-                        candyB.transform.SetParent(tileA.transform);
-                    }
-                }
-
-                return isValid;
-            }
-
-            return false;
-        }
-
         public bool IsGridFullOfCandy(TileSlot[,] gridTiles)
         {
             foreach (TileSlot tile in gridTiles)
@@ -101,6 +62,11 @@ namespace CandyCrushREM.Managers.Grid
             return true;
         }
 
+        public bool CheckTileAdjacency(TileSlot tileA, TileSlot tileB)
+        {
+            return IsTileVerticallyAdjacent(tileA, tileB) || IsTileHorizontallyAdjacent(tileA, tileB);
+        }
+        
         private bool IsTileVerticallyAdjacent(TileSlot tileA, TileSlot tileB)
         {
             int p1 = Mathf.Max(tileA.Position.x, tileB.Position.x);
@@ -117,66 +83,9 @@ namespace CandyCrushREM.Managers.Grid
             return p1 - p2 == 1 && tileB.Position.x - tileA.Position.x == 0;
         }
 
-        private IEnumerator SwapRoutine(TileSlot tileA, TileSlot tileB, TileSlot[,] gridTiles, bool isValid, float duration)
+        private TileSlot[,] GenerateGrid(SO_LevelPreset LevelPreset)
         {
-            IsSwapping = true;
-            yield return LerpSwap(tileA.AssociatedCandy.transform, tileB.AssociatedCandy.transform, duration);
-
-            if (!isValid)
-            {
-                yield return LerpSwap(tileB.AssociatedCandy.transform, tileA.AssociatedCandy.transform, duration);
-            }
-
-            IsSwapping = false;
-            yield break;
-        }
-
-        private IEnumerator LerpSwap(Transform transformA, Transform transformB, float duration)
-        {
-            Vector3 startPosA = transformA.position;
-            Vector3 endPosA = transformB.position;
-
-            Vector3 startPosB = transformB.position;
-            Vector3 endPosB = transformA.position;
-
-            float t = 0f;
-            while (t < 1f)
-            {
-                t += Time.deltaTime / duration;
-                transformA.position = Vector3.Lerp(startPosA, endPosA, t);
-                transformB.position = Vector3.Lerp(startPosB, endPosB, t);
-                yield return null;
-            }
-        }
-
-        private bool IsSwapMoveValid(TileSlot tileA, TileSlot tileB, TileSlot[,] gridTiles)
-        {
-            int beforeComboCount = ComboManager.GetAllCombinations(gridTiles).Count;
-            //Debug.Log("BEFORE " + beforeComboCount);
-
-            FastSwap(tileA, tileB);
-
-            int afterComboCount = ComboManager.GetAllCombinations(gridTiles).Count;
-            //Debug.Log("AFTER " + afterComboCount);
-
-            FastSwap(tileA, tileB); // Reset the swap
-
-            return beforeComboCount < afterComboCount;
-        }
-
-        private void FastSwap(TileSlot tileA, TileSlot tileB)
-        {
-            Candy toSwap = tileA.AssociatedCandy;
-
-            tileA.AssociatedCandy = tileB.AssociatedCandy;
-            tileB.AssociatedCandy = toSwap;
-
-            // No needs to change also the position
-        }
-
-        private TileSlot[,] GenerateGrid()
-        {
-            Vector2Int size = LevelPreset.GridSize;
+            Vector2Int size = LevelPreset.gridSize;
             TileSlot[,] tiles = new TileSlot[size.x, size.y];
 
             for (int y = 0; y < size.y; y++)

@@ -2,12 +2,15 @@
 {
     using System.Collections.Generic;
     using CandyCrushREM.Candies;
-    using CandyCrushREM.Managers.Grid;
+    using CandyCrushREM.SO;
     using Extension.Classes.Serializable.Singleton;
     using UnityEngine;
 
     public class GameManager : Singleton<GameManager>
     {
+        [field: SerializeField, Header("Level Preset")]
+        public SO_LevelPreset Level { get; private set; }
+
         [field: SerializeField, Header("Managers")]
         public GridManager Grid { get; private set; }
 
@@ -15,16 +18,29 @@
         public PhaseManager PhaseManager { get; private set; }
 
         [field: SerializeField]
+        public SwapManager SwapManager { get; private set; }
+
+        [field: SerializeField]
         public ComboManager ComboManager { get; private set; }
 
         [field: SerializeField]
         public FallManager FallManager { get; private set; }
 
+        [field: SerializeField]
+        public UIManager UIManager { get; private set; }
+
+        [field: SerializeField]
+        public ScoreManager ScoreManager { get; private set; }
+
         public TileSlot[,] CurrentTiles { get; private set; }
 
         private void Start()
         {
-            CurrentTiles = Grid.GenerateCandiesWithGrid();
+            SwapManager.MaxMoves = Level.maxMoves;
+            ScoreManager.ScoreToAchieve = Level.scoreToAchieve;
+            UIManager.InitUI();
+
+            CurrentTiles = Grid.GenerateCandiesWithGrid(Level);
             PhaseManager.Begin();
         }
 

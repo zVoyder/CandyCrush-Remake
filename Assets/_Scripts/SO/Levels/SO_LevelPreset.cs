@@ -5,17 +5,17 @@ namespace CandyCrushREM.SO
     using UnityEditor;
     using UnityEngine;
 
-    [System.Serializable]
-    public class CandyRow
-    {
-        public SO_Candy[] candies;
-    }
-
     [CreateAssetMenu]
     public class SO_LevelPreset : ScriptableObject
     {
-        public Vector2Int GridSize => new Vector2Int(CandieRows[0].candies.Length, CandieRows.Length);
-
-        public CandyRow[] CandieRows;
+        [System.Serializable]
+        public class CandyRow
+        {
+            public SO_Candy[] candies;
+        }
+        public int maxMoves;
+        public int scoreToAchieve;
+        public Vector2Int gridSize => new Vector2Int(candieRows[0].candies.Length, candieRows.Length);
+        public CandyRow[] candieRows;
     }
 }
