@@ -1,6 +1,6 @@
 ﻿namespace Extension.Audio
 {
-    using Extension.Classes.Serializable.Audio;
+    using Extension.Generic.Serializable.Audio;
     using UnityEngine;
 
     public static class AudioExtension

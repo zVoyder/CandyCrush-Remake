@@ -1,18 +1,23 @@
 namespace CandyCrushREM.Managers
 {
     using CandyCrushREM.Candies;
+    using Extension.Generic.Structures;
     using System.Collections;
     using UnityEngine;
 
-    [RequireComponent(typeof(Collider))]
+    [RequireComponent(typeof(Collider2D))]
     public class TileSlot : MonoBehaviour
     {
         public Candy AssociatedCandy { get; set; }
+
+        public Grid<TileSlot> AssociatedGrid { get; private set; }
 
         public Vector2Int Position { get; private set; }
 
         public Color OveringColor { get; private set; }
 
+        [SerializeField]
+        private TileSlotTriggerAllocator _tileTriggerAllocator;
         private SpriteRenderer _sprite;
         private Color _spriteBaseColor;
 
@@ -22,11 +27,14 @@ namespace CandyCrushREM.Managers
             _spriteBaseColor = _sprite.color;
         }
 
-        public void Init(Vector2Int gridPosition, Color overingColor)
+        public void Init(Grid<TileSlot> associatedGrid, FallManager fallManager, Vector2Int gridPosition, Color overingColor)
         {
             Position = gridPosition;
             OveringColor = overingColor;
             transform.name = Position.ToString();
+            AssociatedGrid = associatedGrid;
+
+            _tileTriggerAllocator.Init(() => fallManager.AreFalling, this);
         }
 
         public void OnMouseEnter()
@@ -38,33 +46,6 @@ namespace CandyCrushREM.Managers
         {
             ChangeTileColorTo(_spriteBaseColor);
         }
-
-
-        private void OnTriggerStay2D(Collider2D other)
-        {
-            if (GameManager.Instance.FallManager.AreFalling)
-            {
-                if (other.TryGetComponent(out Candy candy))
-                {
-                    AssociatedCandy = candy;
-                    AssociatedCandy.transform.SetParent(transform);
-                }
-            }
-        }
-
-        
-        private void OnTriggerExit2D(Collider2D other)
-        {
-            if (GameManager.Instance.FallManager.AreFalling)
-            {
-                if (other.TryGetComponent(out Candy candy))
-                {
-                    if (AssociatedCandy == candy)
-                        AssociatedCandy = null;
-                }
-            }
-        }
-        
 
         private void ChangeTileColorTo(Color color)
         {

@@ -2,6 +2,7 @@ namespace CandyCrushREM.Managers
 {
     using System.Collections;
     using CandyCrushREM.Candies;
+    using CandyCrushREM.Pools;
     using CandyCrushREM.SO;
     using Unity.VisualScripting;
     using UnityEngine;
@@ -9,6 +10,9 @@ namespace CandyCrushREM.Managers
 
     public class FallManager : MonoBehaviour
     {
+        [field: SerializeField, Header("Pools")]
+        public CandyPool _candyPool;
+
         [field: SerializeField]
         public SO_Candy[] PossibleCandiesSpawn {  get; private set; }
 
@@ -32,9 +36,9 @@ namespace CandyCrushREM.Managers
                 {
                     SO_Candy spawnedCandy = PossibleCandiesSpawn[Random.Range(0, PossibleCandiesSpawn.Length)];
 
-                    if (Instantiate(spawnedCandy.candyBase, tile.transform.position, Quaternion.identity, tile.transform).TryGetComponent(out Candy candy))
+                    if (_candyPool.Get(tile.transform).TryGetComponent(out Candy candy))
                     {
-                        candy.Init(spawnedCandy);
+                        candy.Init(spawnedCandy, _candyPool);
                         tile.AssociatedCandy = candy;
                     }
                 }

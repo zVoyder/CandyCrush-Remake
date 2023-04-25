@@ -1,14 +1,11 @@
 
-namespace Extension.Classes.Serializable.Audio
+namespace Extension.Generic.Serializable.Audio
 {
     using System.Collections;
     using System.Collections.Generic;
     using UnityEngine;
     using UnityEngine.Audio;
 
-    /// <summary>
-    /// This is a serialed class used for settings of the audiosource.
-    /// </summary>
     [System.Serializable]
     public class AudioSFX
     {

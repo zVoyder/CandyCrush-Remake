@@ -1,8 +1,8 @@
-namespace Extension.Classes.Serializable.Singleton
+﻿namespace Extension.Patterns.Singleton
 {
     using UnityEngine;
 
-    public abstract class Singleton<T> : MonoBehaviour where T : Component
+    public abstract class PersistentSingleton<T> : MonoBehaviour where T : Component
     {
         public static T Instance;
 
@@ -19,6 +19,7 @@ namespace Extension.Classes.Serializable.Singleton
             {
                 Destroy(gameObject);
             }
+            DontDestroyOnLoad(gameObject);
         }
     }
 }

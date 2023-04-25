@@ -1,9 +1,8 @@
 ﻿namespace CandyCrushREM.Managers
 {
-    using System.Collections;
+    using CandyCrushREM.Candies;
     using System.Collections.Generic;
     using UnityEngine;
-    using CandyCrushREM.Candies;
 
     public class ComboManager : MonoBehaviour
     {
@@ -11,37 +10,42 @@
         public ScoreManager ScoreManager { get; private set; }
 
         [field: SerializeField, Header("Combination"), Tooltip("How long a combination must be.")]
-        public int CombinationCount { get; private set; } = 3;
+        public uint CombinationCount { get; private set; } = 3;
 
         // Effect on destroy
-        [field: SerializeField]
-        public GameObject EffectOnDestroy { get; private set; }
+        [SerializeField]
+        private GameObject _effectOnDestroy;
 
         public void DestroyAllCombos(TileSlot[,] gridTiles)
         {
-            List<List<Candy>> combos = GetAllCombinations(gridTiles);
+            List<List<TileSlot>> combos = GetAllCombinations(gridTiles);
 
-            foreach (List<Candy> singleCombo in combos)
+            foreach (List<TileSlot> singleCombo in combos)
             {
-                foreach (Candy candy in singleCombo)
+                foreach (TileSlot tile in singleCombo)
                 {
                     this.ScoreManager.AddScore(1);
-                    Instantiate(EffectOnDestroy, candy.transform.position, Quaternion.identity);
-                    Destroy(candy.gameObject);
+                    Instantiate(_effectOnDestroy, tile.transform.position, Quaternion.identity);
+
+                    if (tile.AssociatedCandy)
+                    {
+                        tile.AssociatedCandy.Dispose();
+                        tile.AssociatedCandy = null;
+                    }
                 }
             }
         }
 
-        public List<List<Candy>> GetAllCombinations(TileSlot[,] gridTiles)
+        public List<List<TileSlot>> GetAllCombinations(TileSlot[,] gridTiles)
         {
-            List<List<Candy>> allCombinations = new List<List<Candy>>();
+            List<List<TileSlot>> allCombinations = new List<List<TileSlot>>();
 
-            foreach (List<Candy> verticalCombos in GetVerticalCombinations(gridTiles))
+            foreach (List<TileSlot> verticalCombos in GetVerticalCombinations(gridTiles))
             {
                 allCombinations.Add(verticalCombos);
             }
 
-            foreach (List<Candy> horizontalCombos in GetHorizontalCombinations(gridTiles))
+            foreach (List<TileSlot> horizontalCombos in GetHorizontalCombinations(gridTiles))
             {
                 allCombinations.Add(horizontalCombos);
             }
@@ -49,13 +53,13 @@
             return allCombinations;
         }
 
-        public List<List<Candy>> GetVerticalCombinations(TileSlot[,] gridTiles)
+        private List<List<TileSlot>> GetVerticalCombinations(TileSlot[,] gridTiles)
         {
-            List<List<Candy>> allVerticalCombinations = new List<List<Candy>>();
+            List<List<TileSlot>> allVerticalCombinations = new List<List<TileSlot>>();
 
             for (int x = 0; x < gridTiles.GetLength(0); x++)
             {
-                foreach(List<Candy> candiesCombo in GetCombinationsOfColumn(gridTiles, x))
+                foreach (List<TileSlot> candiesCombo in GetCombinationsOfColumn(gridTiles, x))
                 {
                     allVerticalCombinations.Add(candiesCombo);
                 }
@@ -64,13 +68,13 @@
             return allVerticalCombinations;
         }
 
-        public List<List<Candy>> GetHorizontalCombinations(TileSlot[,] gridTiles)
+        private List<List<TileSlot>> GetHorizontalCombinations(TileSlot[,] gridTiles)
         {
-            List<List<Candy>> allHorizontalCombinations = new List<List<Candy>>();
+            List<List<TileSlot>> allHorizontalCombinations = new List<List<TileSlot>>();
 
             for (int y = 0; y < gridTiles.GetLength(1); y++)
             {
-                foreach (List<Candy> candiesCombo in GetCombinationsOfRow(gridTiles, y))
+                foreach (List<TileSlot> candiesCombo in GetCombinationsOfRow(gridTiles, y))
                 {
                     allHorizontalCombinations.Add(candiesCombo);
                 }
@@ -79,69 +83,69 @@
             return allHorizontalCombinations;
         }
 
-        public List<List<Candy>> GetCombinationsOfColumn(TileSlot[,] gridTiles, int columnIndex)
+        private List<List<TileSlot>> GetCombinationsOfColumn(TileSlot[,] gridTiles, int columnIndex)
         {
-            List<List<Candy>> verticalCombinations = new List<List<Candy>>();
-            List<Candy> candySingleCombo = new List<Candy>();
+            List<List<TileSlot>> verticalCombinations = new List<List<TileSlot>>();
+            List<TileSlot> candySingleCombo = new List<TileSlot>();
 
             candySingleCombo.Clear();
-            candySingleCombo.Add(gridTiles[columnIndex, 0].AssociatedCandy);
+            candySingleCombo.Add(gridTiles[columnIndex, 0]);
 
             for (int y = 1; y < gridTiles.GetLength(1); y++)
             {
                 if (gridTiles[columnIndex, y].AssociatedCandy.CandyType == gridTiles[columnIndex, y - 1].AssociatedCandy.CandyType)
                 {
-                    candySingleCombo.Add(gridTiles[columnIndex, y].AssociatedCandy);
+                    candySingleCombo.Add(gridTiles[columnIndex, y]);
                 }
                 else
                 {
                     if (candySingleCombo.Count >= CombinationCount)
                     {
-                        verticalCombinations.Add(new List<Candy>(candySingleCombo));
+                        verticalCombinations.Add(new List<TileSlot>(candySingleCombo));
                     }
 
                     candySingleCombo.Clear();
-                    candySingleCombo.Add(gridTiles[columnIndex, y].AssociatedCandy);
+                    candySingleCombo.Add(gridTiles[columnIndex, y]);
                 }
             }
 
             if (candySingleCombo.Count >= CombinationCount)
             {
-                verticalCombinations.Add(new List<Candy>(candySingleCombo));
+                verticalCombinations.Add(new List<TileSlot>(candySingleCombo));
             }
 
             return verticalCombinations;
         }
 
-        public List<List<Candy>> GetCombinationsOfRow(TileSlot[,] gridTiles, int rowIndex)
+        private List<List<TileSlot>> GetCombinationsOfRow(TileSlot[,] gridTiles, int rowIndex)
         {
-            List<List<Candy>> horizontalCombinations = new List<List<Candy>>();
-            List<Candy> candySingleCombo = new List<Candy>();
+            List<List<TileSlot>> horizontalCombinations = new List<List<TileSlot>>();
+            List<TileSlot> candySingleCombo = new List<TileSlot>();
 
             candySingleCombo.Clear();
-            candySingleCombo.Add(gridTiles[0, rowIndex].AssociatedCandy);
+            candySingleCombo.Add(gridTiles[0, rowIndex]);
 
             for (int x = 1; x < gridTiles.GetLength(0); x++)
             {
                 if (gridTiles[x, rowIndex].AssociatedCandy.CandyType == gridTiles[x - 1, rowIndex].AssociatedCandy.CandyType)
                 {
-                    candySingleCombo.Add(gridTiles[x, rowIndex].AssociatedCandy);
+                    candySingleCombo.Add(gridTiles[x, rowIndex]);
                 }
                 else
                 {
                     if (candySingleCombo.Count >= CombinationCount)
                     {
-                        horizontalCombinations.Add(new List<Candy>(candySingleCombo));
+                        horizontalCombinations.Add(new List<TileSlot>(candySingleCombo));
                     }
 
                     candySingleCombo.Clear();
-                    candySingleCombo.Add(gridTiles[x, rowIndex].AssociatedCandy);
+                    candySingleCombo.Add(gridTiles[x, rowIndex]);
                 }
             }
 
             if (candySingleCombo.Count >= CombinationCount)
             {
-                horizontalCombinations.Add(new List<Candy>(candySingleCombo));
+                horizontalCombinations.Add(new List<TileSlot>(candySingleCombo));
             }
 
             return horizontalCombinations;

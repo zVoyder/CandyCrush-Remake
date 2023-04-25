@@ -18,7 +18,7 @@
             ChangeState(prevStateKey);
         }
 
-        public void  ChangeStateIn(int nextStateKey, float timeToWait)
+        public void ChangeStateIn(int nextStateKey, float timeToWait)
         {
             StartCoroutine(WaitSecondsAndGoToStateRoutine(nextStateKey, timeToWait));
         }

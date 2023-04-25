@@ -710,6 +710,7 @@ Transform:
   - {fileID: 1025367344}
   - {fileID: 2077032860}
   - {fileID: 1290910759}
+  - {fileID: 1180314884}
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -733,8 +734,6 @@ MonoBehaviour:
   <FallManager>k__BackingField: {fileID: 1025367345}
   <UIManager>k__BackingField: {fileID: 2077032861}
   <ScoreManager>k__BackingField: {fileID: 1290910760}
-  <RowToCheck>k__BackingField: 0
-  <ColumnToCheck>k__BackingField: 0
 --- !u!114 &510161860
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1037,7 +1036,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <ScoreManager>k__BackingField: {fileID: 1290910760}
   <CombinationCount>k__BackingField: 3
-  <EffectOnDestroy>k__BackingField: {fileID: 139366, guid: 8ac98d5c66e44e84090effd3a097f2a2, type: 3}
+  _effectOnDestroy: {fileID: 139366, guid: 8ac98d5c66e44e84090effd3a097f2a2, type: 3}
 --- !u!1 &611789974
 GameObject:
   m_ObjectHideFlags: 0
@@ -1658,6 +1657,51 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 743134188}
   m_CullTransparentMesh: 1
+--- !u!1 &746882184
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 746882185}
+  - component: {fileID: 746882186}
+  m_Layer: 0
+  m_Name: Candies
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &746882185
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 746882184}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1180314884}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &746882186
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 746882184}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: af6bc60e43e4d4647864154a51cc3f73, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <BasePrefab>k__BackingField: {fileID: 873403469514603799, guid: dccb873723ea2284284b59ec2b00b8ab, type: 3}
 --- !u!1 &929789843
 GameObject:
   m_ObjectHideFlags: 0
@@ -1810,8 +1854,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <GridLayout>k__BackingField: {fileID: 132669369}
   <TilePrefab>k__BackingField: {fileID: 4467705284100594460, guid: 6dcc001b1c2c4bd4f9ce5edb0c17882d, type: 3}
-  <TileOveringColor>k__BackingField: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
-  <MovesManager>k__BackingField: {fileID: 0}
+  _tileOveringColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  _candyPool: {fileID: 746882186}
+  _fallManager: {fileID: 1025367345}
 --- !u!1 &990559231
 GameObject:
   m_ObjectHideFlags: 0
@@ -2059,6 +2104,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 96b8dd48287682e48a7780b1a42a14ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _candyPool: {fileID: 746882186}
   <PossibleCandiesSpawn>k__BackingField:
   - {fileID: 11400000, guid: 0e239451410824d4595dfbbf2d8782b4, type: 2}
   - {fileID: 11400000, guid: e1ee85f9b6a9039429cf53c2e81e1a27, type: 2}
@@ -2111,6 +2157,38 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <ComboManager>k__BackingField: {fileID: 601398372}
   <GridManager>k__BackingField: {fileID: 982209367}
+--- !u!1 &1180314883
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1180314884}
+  m_Layer: 0
+  m_Name: Pools
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1180314884
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1180314883}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 746882185}
+  m_Father: {fileID: 510161858}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1290910758
 GameObject:
   m_ObjectHideFlags: 0

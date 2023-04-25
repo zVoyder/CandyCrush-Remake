@@ -8,7 +8,7 @@ namespace CandyCrushREM.Managers
 
     public class SwapManager : MonoBehaviour
     {
-        public int MaxMoves { get; set; }
+        public int MaxMoves { get; private set; }
 
         [field: SerializeField, Header("Combo Manager")]
         public ComboManager ComboManager { get; private set; }
@@ -23,6 +23,11 @@ namespace CandyCrushREM.Managers
         public bool AreMovesOver { get; private set; }
 
         public bool IsSwapping { get; private set; } = false;
+
+        public void Init(int maxMoves)
+        {
+            MaxMoves = maxMoves;
+        }
 
         public void ConsumeMove()
         {

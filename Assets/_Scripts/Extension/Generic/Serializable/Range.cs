@@ -1,4 +1,4 @@
-﻿namespace Extension.Classes.Serializable.Mathematics
+﻿namespace Extension.Generic.Serializable.Mathematics
 {
     using System;
     using UnityEngine;

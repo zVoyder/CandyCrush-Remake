@@ -1,15 +1,18 @@
 ﻿namespace CandyCrushREM.Candies
 {
+    using CandyCrushREM.Managers;
     using CandyCrushREM.SO;
-    using System.Collections;
-    using System.Collections.Generic;
+    using Extension.Interfaces;
+    using Extension.Patterns.ObjectPool;
     using UnityEngine;
 
     [RequireComponent(typeof(SpriteRenderer))]
-    public class Candy : MonoBehaviour
+    public class Candy : MonoBehaviour, IPooledObject
     {
         public SO_Candy SO_Candy { get; private set; }
+
         private SpriteRenderer _spriteRender;
+        private Pool _relatedPool;
 
         public SO_Candy.CandyType CandyType => SO_Candy.type;
 
@@ -18,11 +21,18 @@
             _spriteRender = GetComponent<SpriteRenderer>();
         }
 
-        public void Init(SO_Candy soCandy)
+        public void Init(SO_Candy soCandy, Pool pool)
         {
             transform.name = $"Candy (ID {GetInstanceID()})";
             SO_Candy = soCandy;
             _spriteRender.sprite = SO_Candy.spriteImage;
+            _relatedPool = pool;
+        }
+
+        public void Dispose()
+        {
+            SO_Candy = null;
+            _relatedPool.Dispose(gameObject);
         }
     }
 }
