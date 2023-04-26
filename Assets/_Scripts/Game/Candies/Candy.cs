@@ -16,6 +16,8 @@
 
         public SO_Candy.CandyType CandyType => SO_Candy.type;
 
+        public Pool RelatedPool { get; private set; }
+
         private void Awake()
         {
             _spriteRender = GetComponent<SpriteRenderer>();
@@ -31,14 +33,18 @@
             transform.name = $"Candy (ID {GetInstanceID()})";
             SO_Candy = soCandy;
             _spriteRender.sprite = SO_Candy.spriteImage;
-            _relatedPool = pool;
+            AssociatePool(pool);
         }
 
-        /// <inheritdoc/>
+        public void AssociatePool(Pool associatedPool)
+        {
+            RelatedPool = associatedPool;
+        }
+
         public void Dispose()
         {
             SO_Candy = null;
-            _relatedPool.Dispose(gameObject);
+            RelatedPool.Dispose(gameObject);
         }
     }
 }

@@ -19,6 +19,5 @@ namespace CandyCrushREM.SO
 
         public CandyType type;
         public Sprite spriteImage;
-        public GameObject candyBase;
     }
 }

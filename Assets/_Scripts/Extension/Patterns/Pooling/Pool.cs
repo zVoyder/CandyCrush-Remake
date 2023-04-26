@@ -3,6 +3,7 @@ namespace Extension.Patterns.ObjectPool
     using System.Collections.Generic;
     using UnityEngine;
     using Extension.Transform;
+    using Extension.Interfaces;
 
     public class Pool : MonoBehaviour
     {
@@ -19,7 +20,7 @@ namespace Extension.Patterns.ObjectPool
         /// Gets a GameObject from the pool list.
         /// </summary>
         /// <returns>GameObject from the pool.</returns>
-        public GameObject Get()
+        public virtual GameObject Get()
         {
             if (IsEmpty())
             {
@@ -39,7 +40,7 @@ namespace Extension.Patterns.ObjectPool
         /// <param name="parent">The new GameObject transform parent.</param>
         /// <param name="resetTransform">True to reset its transform, False to not reset its transform.</param>
         /// <returns>GameObject from the pool.</returns>
-        public GameObject Get(Transform parent, bool resetTransform = true)
+        public virtual GameObject Get(Transform parent, bool resetTransform = true)
         {
             GameObject deq = Get();
             deq.transform.SetParent(parent);
@@ -54,7 +55,7 @@ namespace Extension.Patterns.ObjectPool
         /// Disposes a GameObject and returns it to the pool list.
         /// </summary>
         /// <param name="pooledObject">Object to Pool.</param>
-        public void Dispose(GameObject pooledObject)
+        public virtual void Dispose(GameObject pooledObject)
         {
             pooledObject.transform.SetParent(transform);
             pooledObject.transform.ResetTransform();
