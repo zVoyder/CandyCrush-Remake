@@ -1,10 +1,7 @@
 ﻿namespace CandyCrushREM.Managers
 {
     using System;
-    using Unity.VisualScripting;
     using UnityEngine;
-    using static UnityEditor.Progress;
-    using UnityEngine.SocialPlatforms.Impl;
 
     public class ScoreManager : MonoBehaviour
     {
