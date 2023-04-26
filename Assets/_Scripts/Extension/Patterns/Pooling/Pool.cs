@@ -15,7 +15,11 @@ namespace Extension.Patterns.ObjectPool
             Instances = new Queue<GameObject>();
         }
 
-        public GameObject Get(Transform parent)
+        /// <summary>
+        /// Gets a GameObject from the pool list.
+        /// </summary>
+        /// <returns>GameObject from the pool.</returns>
+        public GameObject Get()
         {
             if (IsEmpty())
             {
@@ -24,13 +28,32 @@ namespace Extension.Patterns.ObjectPool
             }
 
             GameObject deq = Instances.Dequeue();
-            deq.transform.SetParent(parent);
-            deq.transform.ResetTransform();
             deq.SetActive(true);
 
             return deq;
         }
 
+        /// <summary>
+        /// Gets a GameObject from the pool list and changes its parent.
+        /// </summary>
+        /// <param name="parent">The new GameObject transform parent.</param>
+        /// <param name="resetTransform">True to reset its transform, False to not reset its transform.</param>
+        /// <returns>GameObject from the pool.</returns>
+        public GameObject Get(Transform parent, bool resetTransform = true)
+        {
+            GameObject deq = Get();
+            deq.transform.SetParent(parent);
+
+            if(resetTransform)
+                deq.transform.ResetTransform();
+
+            return deq;
+        }
+
+        /// <summary>
+        /// Disposes a GameObject and returns it to the pool list.
+        /// </summary>
+        /// <param name="pooledObject">Object to Pool.</param>
         public void Dispose(GameObject pooledObject)
         {
             pooledObject.transform.SetParent(transform);
@@ -39,6 +62,10 @@ namespace Extension.Patterns.ObjectPool
             Instances.Enqueue(pooledObject);
         }
 
+        /// <summary>
+        /// Check if the pool list is empty.
+        /// </summary>
+        /// <returns>True if it is empty, False if not.</returns>
         private bool IsEmpty()
         {
             return Instances.Count == 0;

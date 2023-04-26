@@ -1,11 +1,10 @@
 namespace CandyCrushREM.Managers
 {
-    using System.Collections;
     using CandyCrushREM.Candies;
     using CandyCrushREM.Pools;
-    using UnityEngine;
     using CandyCrushREM.SO;
     using Extension.Generic.Structures;
+    using UnityEngine;
 
     public class GridManager : Grid<TileSlot>
     {
@@ -16,36 +15,21 @@ namespace CandyCrushREM.Managers
 
         [SerializeField, Header("Pools")]
         private CandyPool _candyPool;
+
         [SerializeField, Header("Managers")]
         private FallManager _fallManager;
 
-        public bool CheckTileAdjacency(TileSlot tileA, TileSlot tileB)
-        {
-            return IsTileVerticallyAdjacent(tileA, tileB) || IsTileHorizontallyAdjacent(tileA, tileB);
-        }
-        
-        private bool IsTileVerticallyAdjacent(TileSlot tileA, TileSlot tileB)
-        {
-            int p1 = Mathf.Max(tileA.Position.x, tileB.Position.x);
-            int p2 = Mathf.Min(tileA.Position.x, tileB.Position.x);
-
-            return p1 - p2 == 1 && tileB.Position.y - tileA.Position.y == 0;
-        }
-
-        private bool IsTileHorizontallyAdjacent(TileSlot tileA, TileSlot tileB)
-        {
-            int p1 = Mathf.Max(tileA.Position.y, tileB.Position.y);
-            int p2 = Mathf.Min(tileA.Position.y, tileB.Position.y);
-
-            return p1 - p2 == 1 && tileB.Position.x - tileA.Position.x == 0;
-        }
-
+        /// <summary>
+        /// Initializes Grid.
+        /// </summary>
+        /// <param name="levelPreset">ScriptableObject LevelPreset.</param>
         public void Init(SO_LevelPreset levelPreset)
         {
             base.Init(levelPreset.gridSize);
             LevelPreset = levelPreset;
         }
 
+        /// <inheritdoc/>
         public override TileSlot[,] GenerateGrid()
         {
             RectTransform rectTransform = GridLayout.GetComponent<RectTransform>();
@@ -53,6 +37,7 @@ namespace CandyCrushREM.Managers
             return base.GenerateGrid();
         }
 
+        /// <inheritdoc/>
         protected override void GenerateTile(TileSlot[,] slots, Vector2Int position)
         {
             base.GenerateTile(slots, position);

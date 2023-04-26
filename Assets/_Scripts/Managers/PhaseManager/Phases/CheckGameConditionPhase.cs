@@ -6,10 +6,12 @@
 
     public class CheckGameConditionPhase : State
     {
+        /// <inheritdoc/>
         public CheckGameConditionPhase(string name) : base(name)
         {
         }
 
+        /// <inheritdoc/>
         public override void Enter()
         {
             if (GameManager.Instance.ScoreManager.IsScoreAchieved)
@@ -27,10 +29,12 @@
             GameManager.Instance.PhaseManager.NextState();
         }
 
+        /// <inheritdoc/>
         public override void Exit()
         {   
         }
 
+        /// <inheritdoc/>
         public override void Process()
         {
         }

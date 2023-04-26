@@ -21,6 +21,11 @@
             _spriteRender = GetComponent<SpriteRenderer>();
         }
 
+        /// <summary>
+        /// Initializes candy.
+        /// </summary>
+        /// <param name="soCandy">ScriptableObject of the candy.</param>
+        /// <param name="pool">Associated Pool.</param>
         public void Init(SO_Candy soCandy, Pool pool)
         {
             transform.name = $"Candy (ID {GetInstanceID()})";
@@ -29,6 +34,7 @@
             _relatedPool = pool;
         }
 
+        /// <inheritdoc/>
         public void Dispose()
         {
             SO_Candy = null;

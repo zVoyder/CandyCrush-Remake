@@ -18,16 +18,21 @@ namespace CandyCrushREM.Managers
 
         public bool AreFalling { get; private set; }
 
-        private void Awake()
+        /// <summary>
+        /// Lets the candies falls for N seconds.
+        /// </summary>
+        /// <param name="duration">Duration in seconds.</param>
+        /// <param name="tiles">Grid of TileSlot.</param>
+        public void LetCandiesFallFor(TileSlot[,] tiles, float duration)
         {
-            DisableCandiesFall();
+            StartCoroutine(FallRoutine(tiles, duration));
         }
 
-        public void LetCandiesFallFor(float duration)
-        {
-            StartCoroutine(FallRoutine(duration));
-        }
-
+        /// <summary>
+        /// Refills the cells of the grid that do not have an associated candy.
+        /// </summary>
+        /// <param name="gridTiles">Grid to operate.</param>
+        /// <param name="tiles">Grid of TileSlot.</param>
         public void RefillGridWithCandies(TileSlot[,] gridTiles)
         {
             foreach (TileSlot tile in gridTiles)
@@ -45,49 +50,56 @@ namespace CandyCrushREM.Managers
             }
         }
 
-        private IEnumerator FallRoutine(float time)
+        /// <summary>
+        /// Candies fall routine.
+        /// </summary>
+        /// <param name="tiles">Grid of TileSlot.</param>
+        /// <param name="time">Falling time in seconds.</param>
+        /// <returns></returns>
+        private IEnumerator FallRoutine(TileSlot[,] tiles, float time)
         {
-            EnableCandiesFall();
+            EnableCandiesFall(tiles);
             AreFalling = true;
             yield return new WaitForSeconds(time);
             AreFalling = false;
-            DisableCandiesFall();
+            DisableCandiesFall(tiles);
         }
 
-        private void EnableCandiesFall()
+        /// <summary>
+        /// Enable the candies fall.
+        /// </summary>
+        /// <param name="tiles">Grid of TileSlot.</param>
+        private void EnableCandiesFall(TileSlot[,] tiles)
         {
             AreFalling = true;
-            EnableCandiesPhysics();
+            SetActiveCandiesPhysics(tiles, true);
         }
 
-        private void DisableCandiesFall()
+        /// <summary>
+        /// Disable the candies fall.
+        /// </summary>
+        /// <param name="tiles">Grid of TileSlot.</param>
+        private void DisableCandiesFall(TileSlot[,] tiles)
         {
             AreFalling = false;
-            DisableCandiesPhysics();
+            SetActiveCandiesPhysics(tiles, false);
         }
 
-        private void DisableCandiesPhysics()
+        /// <summary>
+        /// Sets active true or false the physic simulation of the candies.
+        /// </summary>
+        /// <param name="tiles">Grid of TileSlot.</param>
+        /// <param name="enabled">Enable if True, Disable if false.</param>
+        private void SetActiveCandiesPhysics(TileSlot[,] tiles, bool enabled)
         {
-            Candy[] candies = FindObjectsByType<Candy>(FindObjectsSortMode.None);
-
-            foreach (Candy cand in candies) 
+            foreach (TileSlot tile in tiles) 
             {
-                if (cand.TryGetComponent<Rigidbody2D>(out Rigidbody2D rb))
+                if (tile.AssociatedCandy)
                 {
-                    rb.simulated = false;
-                }
-            }
-        }
-
-        private void EnableCandiesPhysics()
-        {
-            Candy[] candies = FindObjectsByType<Candy>(FindObjectsSortMode.None);
-
-            foreach (Candy cand in candies)
-            {
-                if (cand.TryGetComponent<Rigidbody2D>(out Rigidbody2D rb))
-                {
-                    rb.simulated = true;
+                    if (tile.AssociatedCandy.TryGetComponent(out Rigidbody2D rb))
+                    {
+                        rb.simulated = enabled;
+                    }
                 }
             }
         }

@@ -29,11 +29,6 @@
             return (n / max) * 100f;
         }
 
-        //public static bool RollAChance(uint probability, uint possibilities)
-        //{
-        //    return Random.Range(0, possibilities) >= (possibilities - probability);
-        //}
-
         /// <summary>
         /// Allows to see if a number is approximately the same compared with an other number.
         /// </summary>

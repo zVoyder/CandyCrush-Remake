@@ -12,6 +12,9 @@ namespace Extension.Patterns.StateMachine
 
         protected List<State> States { get; set; }
 
+        /// <summary>
+        /// Initializes the states list.
+        /// </summary>
         protected virtual void InitStates()
         {
             States = new List<State>();
@@ -32,6 +35,10 @@ namespace Extension.Patterns.StateMachine
             CurrentState?.Process();
         }
 
+        /// <summary>
+        /// Changes the state to a given one.
+        /// </summary>
+        /// <param name="stateKey">Integer key of the target state.</param>
         public void ChangeState(int stateKey)
         {
             if (States[stateKey] != CurrentState)

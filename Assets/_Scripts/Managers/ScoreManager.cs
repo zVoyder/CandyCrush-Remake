@@ -1,7 +1,10 @@
 ﻿namespace CandyCrushREM.Managers
 {
     using System;
+    using Unity.VisualScripting;
     using UnityEngine;
+    using static UnityEditor.Progress;
+    using UnityEngine.SocialPlatforms.Impl;
 
     public class ScoreManager : MonoBehaviour
     {
@@ -9,19 +12,27 @@
         public Action<int, int> OnScoreChange { get; set; }
 
         [field: SerializeField]
-        public int ScorePerCandy { get; private set; }
+        public int ScorePerItem { get; private set; }
 
         public bool IsScoreAchieved { get; private set; }
         public int CurrentScore { get; private set; }
 
+        /// <summary>
+        /// Initilizes the score.
+        /// </summary>
+        /// <param name="scoreToAchieve">Score to achieve.</param>
         public void Init(int scoreToAchieve)
         {
             ScoreToAchieve = scoreToAchieve;
         }
 
-        public void AddScore(int numberOfCandies)
+        /// <summary>
+        /// Adds score by multiplying the ScorePerItem and the number of items.
+        /// </summary>
+        /// <param name="itemsNumber">items number.</param>
+        public void AddScore(int itemsNumber)
         {
-            CurrentScore += ScorePerCandy * numberOfCandies;
+            CurrentScore += ScorePerItem * itemsNumber;
 
             if (CurrentScore >= ScoreToAchieve)
             {

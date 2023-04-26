@@ -5,7 +5,7 @@ namespace CandyCrushREM.Managers
     using System.Collections;
     using UnityEngine;
 
-    [RequireComponent(typeof(Collider2D))]
+    [RequireComponent(typeof(Collider2D), typeof(SpriteRenderer))]
     public class TileSlot : MonoBehaviour
     {
         public Candy AssociatedCandy { get; set; }
@@ -21,12 +21,19 @@ namespace CandyCrushREM.Managers
         private SpriteRenderer _sprite;
         private Color _spriteBaseColor;
 
-        public void Start()
+        private void Awake()
         {
             _sprite = GetComponent<SpriteRenderer>();
             _spriteBaseColor = _sprite.color;
         }
 
+        /// <summary>
+        /// Initializes the TileSlot.
+        /// </summary>
+        /// <param name="associatedGrid">Associated Grid of TileSlot components.</param>
+        /// <param name="fallManager">Associated FallManager.</param>
+        /// <param name="gridPosition">Position in the grid.</param>
+        /// <param name="overingColor">Color when the cursor is overing the cell.</param>
         public void Init(Grid<TileSlot> associatedGrid, FallManager fallManager, Vector2Int gridPosition, Color overingColor)
         {
             Position = gridPosition;
@@ -47,12 +54,22 @@ namespace CandyCrushREM.Managers
             ChangeTileColorTo(_spriteBaseColor);
         }
 
+        /// <summary>
+        /// Changes the TileColor.
+        /// </summary>
+        /// <param name="color">Target color.</param>
         private void ChangeTileColorTo(Color color)
         {
             StopCoroutine("LerpColorRoutine");
             StartCoroutine(LerpColorRoutine(.2f, color));
         }
 
+        /// <summary>
+        /// Lerping Color Coroutine.
+        /// </summary>
+        /// <param name="duration">Transition duration.</param>
+        /// <param name="targetColor">Target Color.</param>
+        /// <returns></returns>
         private IEnumerator LerpColorRoutine(float duration, Color targetColor)
         {
             Color startColor = _sprite.color;

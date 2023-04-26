@@ -14,6 +14,11 @@
         [SerializeField]
         private OnTriggerEnabled _triggerEnabled;
 
+        /// <summary>
+        /// Initilizes the TileSlot Allocator.
+        /// </summary>
+        /// <param name="triggerEnabled">When to enable trigger event delegate.</param>
+        /// <param name="linkedTile">Linked TileSlot.</param>
         public void Init(OnTriggerEnabled triggerEnabled, TileSlot linkedTile)
         {
             _triggerEnabled = triggerEnabled;

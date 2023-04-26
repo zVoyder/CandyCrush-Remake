@@ -26,6 +26,9 @@ namespace CandyCrushREM.Managers
         [field: SerializeField]
         public SwapManager SwapManager { get; private set; }
 
+        /// <summary>
+        /// Initilizes UI.
+        /// </summary>
         public void InitUI()
         {
             ScoreManager.OnScoreChange += UpdateScoreText;
@@ -34,21 +37,37 @@ namespace CandyCrushREM.Managers
             UpdateMovesText(SwapManager.CurrentMoves, SwapManager.MaxMoves);
         }
 
+        /// <summary>
+        /// Enables the GameOver Panel GameObject.
+        /// </summary>
         public void ShowGameoverPanel()
         {
             GameOverPanel.SetActive(true);
         }
 
+        /// <summary>
+        /// Enables the Level Completed Panel GameObject.
+        /// </summary>
         public void ShowLevelCompletedPanel()
         {
             LevelCompletedPanel.SetActive(true);
         }
 
+        /// <summary>
+        /// Updates the score text UI.
+        /// </summary>
+        /// <param name="score">Score points.</param>
+        /// <param name="scoreToAchieve">Score to achieve.</param>
         private void UpdateScoreText(int score, int scoreToAchieve)
         {
             ScoreText.text = $"{score.ToString()} / {scoreToAchieve.ToString()}";
         }
 
+        /// <summary>
+        /// Updates the remaing moves text UI.
+        /// </summary>
+        /// <param name="remaningMoves">Remaining Moves.</param>
+        /// <param name="maxMoves">Max allowed moves.</param>
         private void UpdateMovesText(int remaningMoves, int maxMoves)
         {
             MovesText.text = $"{remaningMoves.ToString()} / {maxMoves.ToString()}";

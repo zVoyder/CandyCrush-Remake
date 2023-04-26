@@ -54,7 +54,7 @@
         }
 
         /// <summary>
-        /// Try to find a GameObject with a specified Tag.
+        /// Tries to find a GameObject with a specified Tag.
         /// </summary>
         /// <param name="tag">Tag name.</param>
         /// <param name="gObject">Found Gameobject.</param>
@@ -74,6 +74,12 @@
             return true;
         }
 
+        /// <summary>
+        /// Tries to find a GameObject with a specified name.
+        /// </summary>
+        /// <param name="name">Tag name.</param>
+        /// <param name="gObject">Found Gameobject.</param>
+        /// <returns>True if it was found, False if not.</returns>
         public static bool TryFindGameObject(string name, out GameObject gObject)
         {
             try
@@ -89,6 +95,11 @@
             return true;
         }
 
+        /// <summary>
+        /// Destroys the last component of type T in this GameObject.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="gameObject"></param>
         public static void DestroyLastComponentOfType<T>(this GameObject gameObject) where T : Component
         {
             T[] components = gameObject.GetComponents<T>();

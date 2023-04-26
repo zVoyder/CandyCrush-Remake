@@ -3,7 +3,7 @@ namespace CandyCrushREM.Managers
     using CandyCrushREM.Candies;
     using System;
     using System.Collections;
-    using System.Collections.Generic;
+    using Extension.Transform;
     using UnityEngine;
 
     public class SwapManager : MonoBehaviour
@@ -24,11 +24,18 @@ namespace CandyCrushREM.Managers
 
         public bool IsSwapping { get; private set; } = false;
 
+        /// <summary>
+        /// Initializes the SwapManager class.
+        /// </summary>
+        /// <param name="maxMoves">Maximum allowed swap moves.</param>
         public void Init(int maxMoves)
         {
             MaxMoves = maxMoves;
         }
 
+        /// <summary>
+        /// Uses a swap move.
+        /// </summary>
         public void ConsumeMove()
         {
             CurrentMoves++;
@@ -36,13 +43,20 @@ namespace CandyCrushREM.Managers
             AreMovesOver = (CurrentMoves >= MaxMoves);
         }
 
+        /// <summary>
+        /// Tries to swap two candies.
+        /// </summary>
+        /// <param name="tileA">TileSlot of the first candy.</param>
+        /// <param name="tileB">TileSlot of the second candy.</param>
+        /// <param name="gridTiles">Grid of TileSlots.</param>
+        /// <returns>True if the swap succeded, False if not.</returns>
         public bool TrySwap(TileSlot tileA, TileSlot tileB, TileSlot[,] gridTiles)
         {
             if (!IsSwapping)
             {
                 bool isValid = IsSwapMoveValid(tileA, tileB, gridTiles);
 
-                if (GridManager.CheckTileAdjacency(tileA, tileB))
+                if (GridManager.CheckTileAdjacency(tileA.Position, tileB.Position))
                 {
                     StartCoroutine(SwapRoutine(tileA, tileB, gridTiles, isValid, .2f));
 
@@ -68,61 +82,58 @@ namespace CandyCrushREM.Managers
             return false;
         }
 
+        /// <summary>
+        /// Swap Candies Coroutine.
+        /// </summary>
+        /// <param name="tileA">From Tile.</param>
+        /// <param name="tileB">To Tile</param>
+        /// <param name="gridTiles">Grid of TileSlot.</param>
+        /// <param name="isValid">Swap move validity.</param>
+        /// <param name="duration">Swap duration in seconds.</param>
+        /// <returns></returns>
         private IEnumerator SwapRoutine(TileSlot tileA, TileSlot tileB, TileSlot[,] gridTiles, bool isValid, float duration)
         {
             IsSwapping = true;
-            yield return LerpSwap(tileA.AssociatedCandy.transform, tileB.AssociatedCandy.transform, duration);
+            yield return tileA.AssociatedCandy.transform.LerpSwitchPosition(tileB.AssociatedCandy.transform, duration);
 
             if (!isValid)
             {
-                yield return LerpSwap(tileB.AssociatedCandy.transform, tileA.AssociatedCandy.transform, duration);
+                yield return tileB.AssociatedCandy.transform.LerpSwitchPosition(tileA.AssociatedCandy.transform, duration);
             }
 
             IsSwapping = false;
             yield break;
         }
 
-        private IEnumerator LerpSwap(Transform transformA, Transform transformB, float duration)
-        {
-            Vector3 startPosA = transformA.position;
-            Vector3 endPosA = transformB.position;
-
-            Vector3 startPosB = transformB.position;
-            Vector3 endPosB = transformA.position;
-
-            float t = 0f;
-            while (t < 1f)
-            {
-                t += Time.deltaTime / duration;
-                transformA.position = Vector3.Lerp(startPosA, endPosA, t);
-                transformB.position = Vector3.Lerp(startPosB, endPosB, t);
-                yield return null;
-            }
-        }
-
+        /// <summary>
+        /// Checks if a swap move is valid.
+        /// </summary>
+        /// <param name="tileA">Tile A.</param>
+        /// <param name="tileB">Tile B.</param>
+        /// <param name="gridTiles">Grid of TileSlot to check.</param>
+        /// <returns>True if it is valid, False if not.</returns>
         private bool IsSwapMoveValid(TileSlot tileA, TileSlot tileB, TileSlot[,] gridTiles)
         {
             int beforeComboCount = ComboManager.GetAllCombinations(gridTiles).Count;
-            //Debug.Log("BEFORE " + beforeComboCount);
-
-            FastSwap(tileA, tileB);
-
+            InstantTemporarySwap(tileA, tileB);
             int afterComboCount = ComboManager.GetAllCombinations(gridTiles).Count;
-            //Debug.Log("AFTER " + afterComboCount);
-
-            FastSwap(tileA, tileB); // Reset the swap
+            InstantTemporarySwap(tileA, tileB); // Reset the swap
 
             return beforeComboCount < afterComboCount;
         }
 
-        private void FastSwap(TileSlot tileA, TileSlot tileB)
+        /// <summary>
+        /// Instantly swaps to candies.
+        /// </summary>
+        /// <param name="tileA">Tile A.</param>
+        /// <param name="tileB">Tile B.</param>
+        private void InstantTemporarySwap(TileSlot tileA, TileSlot tileB)
         {
             Candy toSwap = tileA.AssociatedCandy;
-
             tileA.AssociatedCandy = tileB.AssociatedCandy;
             tileB.AssociatedCandy = toSwap;
 
-            // No needs to change also the position
+            // No needs to also change the position
         }
     }
 }

@@ -13,6 +13,7 @@
         [field: SerializeField]
         public float RefillPhaseDuration { get; private set; } = 1f;
 
+        /// <inheritdoc/>
         protected override void InitStates()
         {
             base.InitStates();
@@ -23,6 +24,9 @@
             States.Add(new CheckGameConditionPhase("CheckGame"));
         }
 
+        /// <summary>
+        /// Starts the Phases.
+        /// </summary>
         public void Begin()
         {
             ChangeState(0);
